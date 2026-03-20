@@ -1,4 +1,4 @@
-# 📡 JobRadar — AI Job Hunt Automation
+# 📡 JobRadar - AI Job Hunt Automation
 
 > Paste any job description → get a tailored cover letter, email, LinkedIn message & follow-up in 10 seconds.  
 > 100% free. Runs entirely in your browser. No sign-up. No data stored on any server.
@@ -17,12 +17,6 @@
 | 📧 **One-Click Gmail** | Opens Gmail with subject and body pre-filled — just hit Send |
 | 📊 **Application Tracker** | Kanban pipeline (Saved → Applied → Screening → Interview → Offer) with CSV export |
 | 💾 **Saves Your Data** | Profile and tracker saved in your browser — works across sessions |
-
----
-
-## Screenshots
-
-*(Add screenshots here after setup)*
 
 ---
 
@@ -128,7 +122,7 @@ Pull requests welcome. If you find a bug or have a feature idea, open an issue.
 
 ## License
 
-MIT — free to use, modify and share.
+MIT - free to use, modify and share.
 
 ---
 

@@ -1,4 +1,4 @@
-# 📡 JobRadar - AI Job Hunt Automation
+# 📡 JobRadar — AI Job Hunt Automation
 
 > Paste any job description → get a tailored cover letter, email, LinkedIn message & follow-up in 10 seconds.  
 > 100% free. Runs entirely in your browser. No sign-up. No data stored on any server.
@@ -20,15 +20,23 @@
 
 ---
 
+## Screenshots
+
+*(Add screenshots here after setup)*
+
+---
+
 ## Getting Started
 
-### Step 1 — Get a Free Anthropic API Key
+### Step 1 — Get a Free Google Gemini API Key (No Credit Card)
 
-1. Go to [console.anthropic.com](https://console.anthropic.com)
-2. Sign up (free)
-3. Click **API Keys** → **Create Key**
-4. Copy the key (starts with `sk-ant-...`)
-5. Free tier gives you **$5 credit** — enough for ~500 applications
+1. Go to **[aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)**
+2. Sign in with your **Gmail account** (that's it — no payment needed)
+3. Click **"Create API Key"** → **"Create API key in new project"**
+4. Copy the key (starts with `AIzaSy...`)
+5. Paste it into JobRadar's setup screen
+
+**Gemini free tier limits:** 15 requests/minute, 1 million tokens/day — more than enough for a full job hunt.
 
 ### Step 2 — Open JobRadar
 
@@ -88,10 +96,10 @@ The workflow is: **AI writes everything instantly → you click Submit on the jo
 
 ## Tech Stack
 
-- Pure HTML + CSS + JavaScript (single file, no framework)
-- Anthropic Claude API (`claude-sonnet-4` for generation)
+- Pure HTML + CSS + JavaScript (single file, no framework, no build step)
+- **Google Gemini API** — free tier, no credit card, just a Gmail account
 - Browser `localStorage` for data persistence
-- No backend, no database, no server costs
+- No backend, no database, no server costs ever
 
 ---
 
@@ -122,7 +130,7 @@ Pull requests welcome. If you find a bug or have a feature idea, open an issue.
 
 ## License
 
-MIT - free to use, modify and share.
+MIT — free to use, modify and share.
 
 ---
 

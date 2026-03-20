@@ -367,24 +367,40 @@ input:focus,textarea:focus,select:focus{border-color:var(--green);}
   <div class="setup-box">
     <div class="setup-logo">📡</div>
     <div class="setup-title">Job<span>Radar</span></div>
-    <div class="setup-sub">AI-powered job hunt automation.<br>Paste any job description → full application in 10 seconds.<br>100% free. Runs in your browser. No data stored.</div>
+    <div class="setup-sub">AI-powered job hunt automation.<br>Paste any job description → full application in 10 seconds.<br>100% free. No credit card. No sign-up.</div>
+
+    <!-- FREE BADGE -->
+    <div style="background:rgba(57,255,143,0.08);border:1px solid rgba(57,255,143,0.25);border-radius:10px;padding:14px 16px;margin-bottom:24px;text-align:left;">
+      <div style="font-size:12px;font-weight:800;color:var(--green);margin-bottom:6px;">✅ 100% FREE — No Credit Card Ever</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.7;">Uses Google Gemini AI — free with any Google account.<br>Just sign in with Gmail, get a key in 2 clicks. That's it.</div>
+    </div>
 
     <div class="setup-field">
-      <div class="setup-label">Anthropic API Key</div>
-      <input class="setup-input" id="api-key-inp" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
+      <div class="setup-label">Google Gemini API Key (Free)</div>
+      <input class="setup-input" id="api-key-inp" type="password" placeholder="AIzaSy..." autocomplete="off">
       <div class="setup-hint">
-        Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key.<br>
-        Free tier includes $5 credit (~500 applications). Your key never leaves your browser.
+        👉 <a href="https://aistudio.google.com/app/apikey" target="_blank"><strong>Click here → Get Free Key</strong></a> (sign in with Gmail → "Create API Key" → copy it)<br>
+        No credit card. No payment. Free forever for this use.
       </div>
     </div>
 
     <div class="setup-field">
       <div class="setup-label">Your Name</div>
-      <input class="setup-input" id="setup-name" placeholder="Ravi Mishra">
+      <input class="setup-input" id="setup-name" placeholder="Your Name">
     </div>
 
     <button class="setup-btn" onclick="startApp()">⚡ Launch JobRadar →</button>
-    <div class="setup-privacy">🔒 Your API key is stored only in your browser's localStorage. It is never sent to any server other than Anthropic's API directly from your browser. No sign-up, no tracking, no ads.</div>
+
+    <div style="margin-top:16px;padding:12px;background:var(--s2);border-radius:8px;font-size:12px;color:var(--tx3);line-height:1.7;">
+      <strong style="color:var(--tx2);">How to get your free key (30 seconds):</strong><br>
+      1. Click the link above → opens Google AI Studio<br>
+      2. Sign in with your Gmail account<br>
+      3. Click <strong>"Create API Key"</strong> → <strong>"Create API key in new project"</strong><br>
+      4. Copy the key (starts with AIzaSy...)<br>
+      5. Paste it above → click Launch
+    </div>
+
+    <div class="setup-privacy">🔒 Your key is stored only in your browser. Never sent to any server except Google's API directly. No tracking, no ads, no accounts.</div>
   </div>
 </div>
 
@@ -405,7 +421,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--green);}
     <button onclick="go('guide')">❓ Guide</button>
   </nav>
   <div class="hdr-r">
-    <div class="api-status"><div class="api-dot ok" id="api-dot"></div><span id="api-lbl">API Ready</span></div>
+    <div class="api-status"><div class="api-dot ok" id="api-dot"></div><span id="api-lbl">Gemini Free ✓</span></div>
     <button class="reset-btn" onclick="resetApp()">Change Key</button>
   </div>
 </header>
@@ -704,8 +720,8 @@ function init() {
 function startApp() {
   const key = document.getElementById('api-key-inp').value.trim();
   const name = document.getElementById('setup-name').value.trim();
-  if (!key || !key.startsWith('sk-ant')) {
-    alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
+  if (!key || !key.startsWith('AIza')) {
+    alert('Please enter a valid Google Gemini API key.\n\nIt should start with "AIzaSy..."\n\nGet one free at: aistudio.google.com/app/apikey');
     return;
   }
   APP.apiKey = key;
@@ -1332,26 +1348,30 @@ function exportCSV() {
 }
 
 // ════════════════════════════════════════
-// AI CALL
+// AI CALL — Google Gemini (FREE, no card)
 // ════════════════════════════════════════
 async function callAI(prompt, maxTokens = 900) {
-  if (!APP.apiKey) { return 'No API key set. Go to profile and add your Anthropic API key.'; }
+  if (!APP.apiKey) {
+    return 'No API key set. Please refresh and add your free Gemini key.';
+  }
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: maxTokens,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${APP.apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: maxTokens, temperature: 0.7 }
+        })
+      }
+    );
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    return data.content?.[0]?.text || 'Unable to generate. Please try again.';
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate. Please try again.';
   } catch (e) {
     log(`<span class="r">API ERROR</span> ${e.message}`);
-    return `Could not generate content. Error: ${e.message}. Check your API key in settings.`;
+    return `Could not generate. Error: ${e.message}.\n\nCheck your Gemini API key at aistudio.google.com/app/apikey`;
   }
 }
 
